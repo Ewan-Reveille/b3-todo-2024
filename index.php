@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                 'personne' => htmlspecialchars($personne),
                 'start_date' => htmlspecialchars($startDate),
                 'end_date' => htmlspecialchars($endDate),
-                'status' => 'Pas encore démarré' // Par défaut
+                'status' => 'Pas encore démarré' // Statut par défaut
             ];
             
             if ($editIndex === -1) {
@@ -79,18 +79,28 @@ if (isset($_GET['toggle_status'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do List avec PHP</title>
     <link href="./public/css/styles.css" rel="stylesheet">
-    <script>
-        function validateForm() {
-            var startDate = document.querySelector('input[name="start_date"]').value;
-            var endDate = document.querySelector('input[name="end_date"]').value;
-            
-            if (new Date(endDate) < new Date(startDate)) {
-                alert("La date de fin ne peut pas être inférieure à la date de début.");
-                return false;
-            }
-            return true;
+    <style>
+        .task-columns {
+            display: flex;
+            justify-content: space-between;
         }
-    </script>
+        .column {
+            width: 32%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .column h2 {
+            text-align: center;
+        }
+        .task-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -99,7 +109,7 @@ if (isset($_GET['toggle_status'])) {
             <?php if ($errorMessage): ?>
                 <p style="color: red;"><?= $errorMessage ?></p>
             <?php endif; ?>
-            <form method="POST" onsubmit="return validateForm()">
+            <form method="POST">
                 <input type="text" name="title" placeholder="Titre" required value="<?= ($editIndex !== -1) ? htmlspecialchars($_SESSION['tasks'][$editIndex]['title']) : '' ?>">
                 <input type="text" name="description" placeholder="Description" required value="<?= ($editIndex !== -1) ? htmlspecialchars($_SESSION['tasks'][$editIndex]['description']) : '' ?>">
                 <input type="text" name="personne" placeholder="Personne attribuée" required value="<?= ($editIndex !== -1) ? htmlspecialchars($_SESSION['tasks'][$editIndex]['personne']) : '' ?>">
@@ -113,27 +123,60 @@ if (isset($_GET['toggle_status'])) {
                 
                 <button type="submit" name="submit"><?= ($editIndex !== -1) ? 'Modifier' : 'Ajouter' ?></button>
             </form>
-            <ul>
-                <?php if (!empty($_SESSION['tasks'])): ?>
+
+            <div class="task-columns">
+                <div class="column">
+                    <h2>Pas encore démarré</h2>
                     <?php foreach ($_SESSION['tasks'] as $index => $task): ?>
-                        <li>
-                            <span>
-                                <strong>Titre : <?= htmlspecialchars($task['title']) ?></strong><br>
-                                Description : <?= htmlspecialchars($task['description']) ?><br>
-                                <em>Personne : <?= htmlspecialchars($task['personne']) ?></em><br>
-                                Date de début : <?= htmlspecialchars($task['start_date']) ?><br>
-                                Date de fin : <?= htmlspecialchars($task['end_date']) ?><br>
-                                <strong>Statut : <?= htmlspecialchars($task['status']) ?></strong>
-                            </span>
-                            <a href="?toggle_status=<?= $index ?>">Changer le statut</a>
-                            <a href="?edit=<?= $index ?>">Modifier</a>
-                            <a href="?delete=<?= $index ?>">Supprimer</a>
-                        </li>
+                        <?php if ($task['status'] === 'Pas encore démarré'): ?>
+                            <div class="task-item">
+                                <strong><?= htmlspecialchars($task['title']) ?></strong><br>
+                                Description: <?= htmlspecialchars($task['description']) ?><br>
+                                Personne: <?= htmlspecialchars($task['personne']) ?><br>
+                                Début: <?= htmlspecialchars($task['start_date']) ?><br>
+                                Fin: <?= htmlspecialchars($task['end_date']) ?><br>
+                                <a href="?toggle_status=<?= $index ?>">Changer le statut</a>
+                                <a href="?edit=<?= $index ?>">Modifier</a>
+                                <a href="?delete=<?= $index ?>">Supprimer</a>
+                            </div>
+                        <?php endif; ?>
                     <?php endforeach; ?>
-                <?php else: ?>
-                    <li class="text-gray-500">Aucune tâche ajoutée pour le moment.</li>
-                <?php endif; ?>
-            </ul>
+                </div>
+                <div class="column">
+                    <h2>En cours</h2>
+                    <?php foreach ($_SESSION['tasks'] as $index => $task): ?>
+                        <?php if ($task['status'] === 'En cours'): ?>
+                            <div class="task-item">
+                                <strong><?= htmlspecialchars($task['title']) ?></strong><br>
+                                Description: <?= htmlspecialchars($task['description']) ?><br>
+                                Personne: <?= htmlspecialchars($task['personne']) ?><br>
+                                Début: <?= htmlspecialchars($task['start_date']) ?><br>
+                                Fin: <?= htmlspecialchars($task['end_date']) ?><br>
+                                <a href="?toggle_status=<?= $index ?>">Changer le statut</a>
+                                <a href="?edit=<?= $index ?>">Modifier</a>
+                                <a href="?delete=<?= $index ?>">Supprimer</a>
+                            </div>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>
+                <div class="column">
+                    <h2>Terminé</h2>
+                    <?php foreach ($_SESSION['tasks'] as $index => $task): ?>
+                        <?php if ($task['status'] === 'Terminé'): ?>
+                            <div class="task-item">
+                                <strong><?= htmlspecialchars($task['title']) ?></strong><br>
+                                Description: <?= htmlspecialchars($task['description']) ?><br>
+                                Personne: <?= htmlspecialchars($task['personne']) ?><br>
+                                Début: <?= htmlspecialchars($task['start_date']) ?><br>
+                                Fin: <?= htmlspecialchars($task['end_date']) ?><br>
+                                <a href="?toggle_status=<?= $index ?>">Changer le statut</a>
+                                <a href="?edit=<?= $index ?>">Modifier</a>
+                                <a href="?delete=<?= $index ?>">Supprimer</a>
+                            </div>
+                        <?php endif; ?>
+                    <?php endforeach; ?>
+                </div>
+            </div>
         </div>
     </div>
 </body>
