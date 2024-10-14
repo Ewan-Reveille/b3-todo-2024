@@ -2,7 +2,7 @@
 
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #f4f4f9;
+    background-color: #020202;
     color: #333;
     margin: 0;
     padding: 0;
@@ -61,9 +61,26 @@ form button:hover {
     margin-top: 30px;
 }
 
-.column {
+
+.column-todo {
     width: 32%;
-    background-color: #fff;
+    background-color: #7d0000;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.column-doing {
+    width: 32%;
+    background-color: #a1a400;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.column-done {
+    width: 32%;
+    background-color: #005203;
     padding: 20px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -79,15 +96,15 @@ form button:hover {
 }
 
 .column:nth-child(1) h2 {
-    background-color: #ffcc00; /* Couleur pour "To-Do" */
+    background-color: #7d0000;
 }
 
 .column:nth-child(2) h2 {
-    background-color: #00ccff; /* Couleur pour "Doing" */
+    background-color: #ffcc00;
 }
 
 .column:nth-child(3) h2 {
-    background-color: #66bb6a; /* Couleur pour "Done" */
+    background-color: #66bb6a;
 }
 
 ul {
@@ -145,6 +162,7 @@ a:hover {
     border-radius: 4px;
     background-color: #f9f9f9;
 }
+
 
 .task-buttons {
     margin-top: 10px;
