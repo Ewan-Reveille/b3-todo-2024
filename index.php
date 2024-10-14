@@ -19,7 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $startDate = trim($_POST['start_date']);
     $endDate = trim($_POST['end_date']);
     
-    // Validation des dates côté serveur
     if (strtotime($endDate) < strtotime($startDate)) {
         $errorMessage = 'La date de fin ne peut pas être inférieure à la date de début.';
     } else {
@@ -30,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
                 'personne' => htmlspecialchars($personne),
                 'start_date' => htmlspecialchars($startDate),
                 'end_date' => htmlspecialchars($endDate),
-                'status' => 'Pas encore démarré' // Statut par défaut
+                'status' => 'Pas encore démarré'
             ];
             
             if ($editIndex === -1) {
@@ -78,29 +77,7 @@ if (isset($_GET['toggle_status'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do List avec PHP</title>
-    <link href="./public/css/styles.css" rel="stylesheet">
-    <style>
-        .task-columns {
-            display: flex;
-            justify-content: space-between;
-        }
-        .column {
-            width: 32%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-        .column h2 {
-            text-align: center;
-        }
-        .task-item {
-            margin-bottom: 10px;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            background-color: #f9f9f9;
-        }
-    </style>
+    <link href="./public/css/styles.css" rel="stylesheet">        
 </head>
 <body>
     <div class="container">
@@ -114,7 +91,6 @@ if (isset($_GET['toggle_status'])) {
                 <input type="text" name="description" placeholder="Description" required value="<?= ($editIndex !== -1) ? htmlspecialchars($_SESSION['tasks'][$editIndex]['description']) : '' ?>">
                 <input type="text" name="personne" placeholder="Personne attribuée" required value="<?= ($editIndex !== -1) ? htmlspecialchars($_SESSION['tasks'][$editIndex]['personne']) : '' ?>">
                 
-                <!-- Champs pour la date de début et de fin -->
                 <label for="start_date">Date de début :</label>
                 <input type="date" name="start_date" required value="<?= ($editIndex !== -1) ? htmlspecialchars($_SESSION['tasks'][$editIndex]['start_date']) : '' ?>">
                 
