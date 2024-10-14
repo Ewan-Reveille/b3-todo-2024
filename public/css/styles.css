@@ -4,12 +4,17 @@ body {
     font-family: 'Roboto', sans-serif;
     background-color: #f4f4f9;
     color: #333;
+    margin: 0;
+    padding: 0;
 }
 
 .container {
     max-width: 1200px;
-    margin: 0 auto;
+    margin: 50px auto;
     padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .todo-box {
@@ -23,6 +28,7 @@ body {
 h1 {
     font-size: 28px;
     margin-bottom: 20px;
+    color: #333;
 }
 
 form input, form button {
@@ -66,6 +72,22 @@ form button:hover {
 .column h2 {
     font-size: 20px;
     margin-bottom: 10px;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    color: #fff;
+}
+
+.column:nth-child(1) h2 {
+    background-color: #ffcc00; /* Couleur pour "To-Do" */
+}
+
+.column:nth-child(2) h2 {
+    background-color: #00ccff; /* Couleur pour "Doing" */
+}
+
+.column:nth-child(3) h2 {
+    background-color: #66bb6a; /* Couleur pour "Done" */
 }
 
 ul {
@@ -110,6 +132,20 @@ a:hover {
     background-color: #e84118;
 }
 
+.task-columns {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.task-item {
+    margin-bottom: 10px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f9f9f9;
+}
+
 .task-buttons {
     margin-top: 10px;
     text-align: left;
@@ -134,27 +170,7 @@ a:hover {
     background-color: #e84118;
 }
 
-.task-columns {
-    display: flex;
-    justify-content: space-between;
-}
-.column {
-    width: 32%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
-.column h2 {
-    text-align: center;
-}
-.task-item {
-    margin-bottom: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    background-color: #f9f9f9;
-}
-
+/* Responsive */
 @media (max-width: 768px) {
     .columns {
         flex-direction: column;
