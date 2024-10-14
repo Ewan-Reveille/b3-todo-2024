@@ -23,14 +23,10 @@ if (isset($_GET['edit'])) {
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['filter'])) {
     $startDateFilter = trim($_POST['start_date_filter']);
-
     if (!empty($startDateFilter)) {
         $filteredTasks = array_filter($_SESSION['tasks'], function ($task) use ($startDateFilter) {
             return $task['start_date'] === $startDateFilter;
         });
-    }
-    if (isset($_GET['debug'])){
-        var_dump($_SESSION['tasks'][(int)$_GET['debug']]);
     }
 }
 
@@ -77,14 +73,14 @@ if (isset($_GET['toggle_status'])) {
     if (isset($_SESSION['tasks'][$index])) {
         $currentStatus = $_SESSION['tasks'][$index]['status'];
         switch ($currentStatus) {
-            case 'Pas encore démarré':
-                $_SESSION['tasks'][$index]['status'] = 'En cours';
+            case STATUSES['todo']:
+                $_SESSION['tasks'][$index]['status'] = STATUSES['doing'];
                 break;
-            case 'En cours':
-                $_SESSION['tasks'][$index]['status'] = 'Terminé';
+            case STATUSES['doing']:
+                $_SESSION['tasks'][$index]['status'] = STATUSES['done'];
                 break;
-            case 'Terminé':
-                $_SESSION['tasks'][$index]['status'] = 'Pas encore démarré';
+            case STATUSES['done']:
+                $_SESSION['tasks'][$index]['status'] = STATUSES['todo'];
                 break;
         }
     }
@@ -133,8 +129,8 @@ if (isset($_GET['toggle_status'])) {
             <div class="task-columns">
                 <div class="column">
                     <h2><?= STATUSES['todo'] ?></h2>
-                    <?php foreach ($_SESSION['tasks'] as $index => $task): ?>
-                        <?php if ($task['status'] === 'Pas encore démarré'): ?>
+                    <?php foreach ($filteredTasks as $index => $task): ?>
+                        <?php if ($task['status'] === STATUSES['todo']): ?>
                             <div class="task-item">
                                 <strong><?= htmlspecialchars($task['title']) ?></strong><br>
                                 Description: <?= htmlspecialchars($task['description']) ?><br>
@@ -150,10 +146,9 @@ if (isset($_GET['toggle_status'])) {
                     <?php endforeach; ?>
                 </div>
                 <div class="column">
-
                     <h2><?= STATUSES['doing'] ?></h2>
-                    <?php foreach ($_SESSION['tasks'] as $index => $task): ?>
-                        <?php if ($task['status'] === 'En cours'): ?>
+                    <?php foreach ($filteredTasks as $index => $task): ?>
+                        <?php if ($task['status'] === STATUSES['doing']): ?>
                             <div class="task-item">
                                 <strong><?= htmlspecialchars($task['title']) ?></strong><br>
                                 Description: <?= htmlspecialchars($task['description']) ?><br>
@@ -169,8 +164,8 @@ if (isset($_GET['toggle_status'])) {
                 </div>
                 <div class="column">
                     <h2><?= STATUSES['done'] ?></h2>
-                    <?php foreach ($_SESSION['tasks'] as $index => $task): ?>
-                        <?php if ($task['status'] === 'Terminé'): ?>
+                    <?php foreach ($filteredTasks as $index => $task): ?>
+                        <?php if ($task['status'] === STATUSES['done']): ?>
                             <div class="task-item">
                                 <strong><?= htmlspecialchars($task['title']) ?></strong><br>
                                 Description: <?= htmlspecialchars($task['description']) ?><br>
