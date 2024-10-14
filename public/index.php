@@ -1,24 +1,21 @@
 <?php
-session_start(); // Start the session for task storage
+session_start();
 
-// Initialize the task list if it doesn't exist
 if (!isset($_SESSION['tasks'])) {
     $_SESSION['tasks'] = [];
 }
 
-// Add a task
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['task'])) {
     $task = trim($_POST['task']);
     if (!empty($task)) {
-        $_SESSION['tasks'][] = $task; // Add the task to the session
+        $_SESSION['tasks'][] = $task;
     }
 }
 
-// Remove a task
 if (isset($_GET['delete'])) {
     $index = (int)$_GET['delete'];
     if (isset($_SESSION['tasks'][$index])) {
-        array_splice($_SESSION['tasks'], $index, 1); // Remove the task by its index
+        array_splice($_SESSION['tasks'], $index, 1);
     }
 }
 ?>
@@ -29,20 +26,18 @@ if (isset($_GET['delete'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>To-Do List avec PHP</title>
-    <link href="css/styles.css" rel="stylesheet"> <!-- Link to custom CSS -->
+    <link href="css/styles.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
     <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
         <h1 class="text-2xl font-bold text-center mb-4">Ma To-Do List</h1>
 
-        <!-- Task addition form -->
         <form method="POST" class="flex mb-4">
             <input type="text" name="task" class="flex-1 p-2 border border-gray-300 rounded-l focus:outline-none" placeholder="Ajouter une tâche..." required>
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600 focus:outline-none">Ajouter</button>
         </form>
 
-        <!-- Task list -->
         <ul class="list-none space-y-2">
             <?php if (!empty($_SESSION['tasks'])): ?>
                 <?php foreach ($_SESSION['tasks'] as $index => $task): ?>
