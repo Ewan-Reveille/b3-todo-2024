@@ -5,7 +5,6 @@ if (!isset($_SESSION['tasks'])) {
     $_SESSION['tasks'] = [];
 }
 
-// Vérifiez si nous sommes en mode d'édition
 $editIndex = -1;
 if (isset($_GET['edit'])) {
     $editIndex = (int)$_GET['edit'];
@@ -17,22 +16,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
     $personne = trim($_POST['personne']);
     
     if (!empty($title) && !empty($description) && !empty($personne)) {
+        $taskData = [
+            'title' => htmlspecialchars($title),
+            'description' => htmlspecialchars($description),
+            'personne' => htmlspecialchars($personne),
+            'status' => 'Pas encore démarré' // Par défaut
+        ];
+        
         if ($editIndex === -1) {
-            // Ajouter une nouvelle tâche
-            $_SESSION['tasks'][] = [
-                'title' => htmlspecialchars($title),
-                'description' => htmlspecialchars($description),
-                'personne' => htmlspecialchars($personne)
-            ];
+            $_SESSION['tasks'][] = $taskData;
         } else {
-            // Mettre à jour une tâche existante
-            $_SESSION['tasks'][$editIndex] = [
-                'title' => htmlspecialchars($title),
-                'description' => htmlspecialchars($description),
-                'personne' => htmlspecialchars($personne)
-            ];
+            $_SESSION['tasks'][$editIndex] = $taskData;
         }
-        header("Location: " . $_SERVER['PHP_SELF']); // Redirige pour éviter la soumission multiple
+        header("Location: " . $_SERVER['PHP_SELF']);
         exit;
     }
 }
@@ -42,6 +38,26 @@ if (isset($_GET['delete'])) {
     if (isset($_SESSION['tasks'][$index])) {
         array_splice($_SESSION['tasks'], $index, 1);
     }
+}
+
+if (isset($_GET['toggle_status'])) {
+    $index = (int)$_GET['toggle_status'];
+    if (isset($_SESSION['tasks'][$index])) {
+        $currentStatus = $_SESSION['tasks'][$index]['status'];
+        switch ($currentStatus) {
+            case 'Pas encore démarré':
+                $_SESSION['tasks'][$index]['status'] = 'En cours';
+                break;
+            case 'En cours':
+                $_SESSION['tasks'][$index]['status'] = 'Terminé';
+                break;
+            case 'Terminé':
+                $_SESSION['tasks'][$index]['status'] = 'Pas encore démarré';
+                break;
+        }
+    }
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit;
 }
 ?>
 
@@ -68,10 +84,12 @@ if (isset($_GET['delete'])) {
                     <?php foreach ($_SESSION['tasks'] as $index => $task): ?>
                         <li>
                             <span>
-                                <strong><?= htmlspecialchars($task['title']) ?></strong><br>
-                                <?= htmlspecialchars($task['description']) ?><br>
-                                <em><?= htmlspecialchars($task['personne']) ?></em>
+                                <strong>Titre : <?= htmlspecialchars($task['title']) ?></strong><br>
+                                Description : <?= htmlspecialchars($task['description']) ?><br>
+                                <em>Personne : <?= htmlspecialchars($task['personne']) ?></em><br>
+                                <strong>Statut : <?= htmlspecialchars($task['status']) ?></strong>
                             </span>
+                            <a href="?toggle_status=<?= $index ?>">Changer le statut</a>
                             <a href="?edit=<?= $index ?>">Modifier</a>
                             <a href="?delete=<?= $index ?>">Supprimer</a>
                         </li>
