@@ -8,7 +8,7 @@ if (!isset($_SESSION['tasks'])) {
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['task'])) {
     $task = trim($_POST['task']);
     if (!empty($task)) {
-        $_SESSION['tasks'][] = $task;
+        $_SESSION['tasks'][] = htmlspecialchars($task);
     }
 }
 
@@ -32,12 +32,10 @@ if (isset($_GET['delete'])) {
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
     <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
         <h1 class="text-2xl font-bold text-center mb-4">Ma To-Do List</h1>
-
         <form method="POST" class="flex mb-4">
             <input type="text" name="task" class="flex-1 p-2 border border-gray-300 rounded-l focus:outline-none" placeholder="Ajouter une tâche..." required>
             <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600 focus:outline-none">Ajouter</button>
         </form>
-
         <ul class="list-none space-y-2">
             <?php if (!empty($_SESSION['tasks'])): ?>
                 <?php foreach ($_SESSION['tasks'] as $index => $task): ?>
