@@ -86,12 +86,13 @@ form button:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.column h2 {
-    font-size: 20px;
-    margin-bottom: 10px;
-    text-align: center;
-    padding: 10px;
-    border-radius: 5px;
+.column-done h2 {
+    color: #fff;
+}
+.column-todo h2 {
+    color: #fff;
+}
+.column-doing h2 {
     color: #fff;
 }
 
@@ -188,7 +189,14 @@ a:hover {
     background-color: #e84118;
 }
 
-/* Responsive */
+.footer h2 {
+    text-align: center;
+    margin-top: 20px;
+    padding: 10px;
+    color: #ffffff;
+    border-radius: 5px;
+}
+
 @media (max-width: 768px) {
     .columns {
         flex-direction: column;

@@ -183,7 +183,9 @@ if (isset($_GET['toggle_status'])) {
         </div>
     </div>
     <footer>
-        <small>MyDigitalSchool 2024</small>
+        <div class="footer">
+            <h2>MyDigitalSchool 2024</h2>
+        </div>
     </footer>
 </body>
 </html>
