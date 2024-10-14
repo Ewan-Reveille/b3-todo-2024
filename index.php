@@ -127,7 +127,7 @@ if (isset($_GET['toggle_status'])) {
             </form>
 
             <div class="task-columns">
-                <div class="column">
+                <div class="column-todo">
                     <h2><?= STATUSES['todo'] ?></h2>
                     <?php foreach ($filteredTasks as $index => $task): ?>
                         <?php if ($task['status'] === STATUSES['todo']): ?>
@@ -145,7 +145,7 @@ if (isset($_GET['toggle_status'])) {
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
-                <div class="column">
+                <div class="column-doing">
                     <h2><?= STATUSES['doing'] ?></h2>
                     <?php foreach ($filteredTasks as $index => $task): ?>
                         <?php if ($task['status'] === STATUSES['doing']): ?>
@@ -162,7 +162,7 @@ if (isset($_GET['toggle_status'])) {
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
-                <div class="column">
+                <div class="column-done">
                     <h2><?= STATUSES['done'] ?></h2>
                     <?php foreach ($filteredTasks as $index => $task): ?>
                         <?php if ($task['status'] === STATUSES['done']): ?>
@@ -182,5 +182,8 @@ if (isset($_GET['toggle_status'])) {
             </div>
         </div>
     </div>
+    <footer>
+        <small>MyDigitalSchool 2024</small>
+    </footer>
 </body>
 </html>
