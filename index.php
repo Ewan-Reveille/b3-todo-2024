@@ -7,9 +7,23 @@ if (!isset($_SESSION['tasks'])) {
 
 $editIndex = -1;
 $errorMessage = '';
+$filteredTasks = $_SESSION['tasks'];
+$startDateFilter = '';
 
 if (isset($_GET['edit'])) {
     $editIndex = (int)$_GET['edit'];
+}
+
+// Handling the filtering of tasks based on start date
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['filter'])) {
+    $startDateFilter = trim($_POST['start_date_filter']);
+
+    // Filtering the tasks based on the specified start date
+    if (!empty($startDateFilter)) {
+        $filteredTasks = array_filter($_SESSION['tasks'], function ($task) use ($startDateFilter) {
+            return $task['start_date'] === $startDateFilter; // Match the start date
+        });
+    }
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
@@ -100,10 +114,18 @@ if (isset($_GET['toggle_status'])) {
                 <button type="submit" name="submit"><?= ($editIndex !== -1) ? 'Modifier' : 'Ajouter' ?></button>
             </form>
 
+            <form method="POST" style="margin-top: 20px;">
+                <h2>Filtrer par date de début</h2>
+                <label for="start_date_filter">Date de début :</label>
+                <input type="date" name="start_date_filter" value="<?= htmlspecialchars($startDateFilter) ?>">
+                
+                <button type="submit" name="filter">Filtrer</button>
+            </form>
+
             <div class="task-columns">
                 <div class="column">
                     <h2>Pas encore démarré</h2>
-                    <?php foreach ($_SESSION['tasks'] as $index => $task): ?>
+                    <?php foreach ($filteredTasks as $index => $task): ?>
                         <?php if ($task['status'] === 'Pas encore démarré'): ?>
                             <div class="task-item">
                                 <strong><?= htmlspecialchars($task['title']) ?></strong><br>
@@ -120,7 +142,7 @@ if (isset($_GET['toggle_status'])) {
                 </div>
                 <div class="column">
                     <h2>En cours</h2>
-                    <?php foreach ($_SESSION['tasks'] as $index => $task): ?>
+                    <?php foreach ($filteredTasks as $index => $task): ?>
                         <?php if ($task['status'] === 'En cours'): ?>
                             <div class="task-item">
                                 <strong><?= htmlspecialchars($task['title']) ?></strong><br>
@@ -137,7 +159,7 @@ if (isset($_GET['toggle_status'])) {
                 </div>
                 <div class="column">
                     <h2>Terminé</h2>
-                    <?php foreach ($_SESSION['tasks'] as $index => $task): ?>
+                    <?php foreach ($filteredTasks as $index => $task): ?>
                         <?php if ($task['status'] === 'Terminé'): ?>
                             <div class="task-item">
                                 <strong><?= htmlspecialchars($task['title']) ?></strong><br>
