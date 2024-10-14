@@ -5,10 +5,17 @@ if (!isset($_SESSION['tasks'])) {
     $_SESSION['tasks'] = [];
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['task'])) {
-    $task = trim($_POST['task']);
-    if (!empty($task)) {
-        $_SESSION['tasks'][] = htmlspecialchars($task);
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
+    $title = trim($_POST['title']);
+    $description = trim($_POST['description']);
+    $personne = trim($_POST['personne']);
+    
+    if (!empty($title) && !empty($description) && !empty($personne)) {
+        $_SESSION['tasks'][] = [
+            'title' => htmlspecialchars($title),
+            'description' => htmlspecialchars($description),
+            'personne' => htmlspecialchars($personne)
+        ];
     }
 }
 
@@ -33,14 +40,20 @@ if (isset($_GET['delete'])) {
     <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
         <h1 class="text-2xl font-bold text-center mb-4">Ma To-Do List</h1>
         <form method="POST" class="flex mb-4">
-            <input type="text" name="task" class="flex-1 p-2 border border-gray-300 rounded-l focus:outline-none" placeholder="Ajouter une tâche..." required>
-            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600 focus:outline-none">Ajouter</button>
+            <input type="text" name="title" class="flex-1 p-2 border border-gray-300 rounded-l focus:outline-none" placeholder="Titre" required>
+            <input type="text" name="description" class="flex-1 p-2 border border-gray-300 rounded-l focus:outline-none" placeholder="Description" required>
+            <input type="text" name="personne" class="flex-1 p-2 border border-gray-300 rounded-l focus:outline-none" placeholder="Personne attribuée" required>
+            <button type="submit" name="submit" class="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600 focus:outline-none">Ajouter</button>
         </form>
         <ul class="list-none space-y-2">
             <?php if (!empty($_SESSION['tasks'])): ?>
                 <?php foreach ($_SESSION['tasks'] as $index => $task): ?>
                     <li class="bg-gray-200 p-2 rounded flex justify-between items-center">
-                        <span><?= htmlspecialchars($task) ?></span>
+                        <span>
+                            <strong><?= htmlspecialchars($task['title']) ?></strong><br>
+                            <?= htmlspecialchars($task['description']) ?><br>
+                            <em><?= htmlspecialchars($task['personne']) ?></em>
+                        </span>
                         <a href="?delete=<?= $index ?>" class="bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">Supprimer</a>
                     </li>
                 <?php endforeach; ?>
