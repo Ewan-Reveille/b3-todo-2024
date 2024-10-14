@@ -31,21 +31,6 @@ Installation and Usage :
 -Click the Add button to add the task to the list.
 -Click the Delete button next to each task to remove it from the list.
 
-Project Structure :
-b3-todo-2024/
-├── public/                   # Dossier pour les fichiers accessibles au public
-│   ├── index.php             # Fichier principal de l'application
-│   ├── css/                  # Dossier pour les fichiers CSS
-│   │   └── styles.css        # Fichier CSS personnalisé (optionnel)
-│   ├── js/                   # Dossier pour les fichiers JavaScript
-│   └── images/               # Dossier pour les images (si nécessaire)
-├── src/                      # Dossier pour le code source de l'application
-│   ├── config.php            # Fichier de configuration (optionnel)
-├── vendor/                   # Dossier pour les bibliothèques tierces (si utilisé avec Composer)
-│   └── ...                   # Autres fichiers ou dépendances
-├── README.md                 # Fichier README
-└── composer.json 
-
 File Explanation :
 index.php: Contains the HTML structure, PHP logic for adding and removing tasks, and session management for temporary storage.
 Technologies Used
