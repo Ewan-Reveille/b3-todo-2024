@@ -142,7 +142,6 @@ if (isset($_GET['toggle_status'])) {
                                 <a href="?toggle_status=<?= $index ?>">Changer le statut</a>
                                 <a href="?edit=<?= $index ?>">Modifier</a>
                                 <a href="?delete=<?= $index ?>">Supprimer</a>
-                                <a href="?debug=<?= $index ?>">Débugger</a>
                             </div>
                         <?php endif; ?>
                     <?php endforeach; ?>
