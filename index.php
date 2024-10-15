@@ -41,13 +41,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['submit'])) {
         $errorMessage = 'La date de fin ne peut pas être inférieure à la date de début.';
     } else {
         if (!empty($title) && !empty($description) && !empty($personne) && !empty($startDate) && !empty($endDate)) {
+            $status = ($editIndex !== -1) ? $_SESSION['tasks'][$editIndex]['status'] : STATUSES['todo'];
+            
             $taskData = [
                 'title' => htmlspecialchars($title),
                 'description' => htmlspecialchars($description),
                 'personne' => htmlspecialchars($personne),
                 'start_date' => htmlspecialchars($startDate),
                 'end_date' => htmlspecialchars($endDate),
-                'status' => STATUSES['todo']
+                'status' => $status
             ];
             
             if ($editIndex === -1) {
