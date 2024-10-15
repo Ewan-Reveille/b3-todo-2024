@@ -89,6 +89,17 @@ if (isset($_GET['toggle_status'])) {
     header("Location: " . $_SERVER['PHP_SELF']);
     exit;
 }
+
+if (isset($_GET['update_status']) && isset($_GET['new_status'])) {
+    $taskId = (int)$_GET['update_status'];
+    $newStatus = htmlspecialchars($_GET['new_status']);
+    
+    if (isset($_SESSION['tasks'][$taskId])) {
+        $_SESSION['tasks'][$taskId]['status'] = STATUSES[$newStatus];
+    }
+    exit; 
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -129,51 +140,48 @@ if (isset($_GET['toggle_status'])) {
             </form>
 
             <div class="task-columns">
-                <div class="column-todo">
+                <div class="column-todo" data-status="todo" ondragover="allowDrop(event)" ondrop="drop(event)">
                     <h2><?= STATUSES['todo'] ?></h2>
                     <?php foreach ($filteredTasks as $index => $task): ?>
                         <?php if ($task['status'] === STATUSES['todo']): ?>
-                            <div class="task-item">
+                            <div class="task-item" draggable="true" ondragstart="drag(event)" id="task-<?= $index ?>">
                                 <strong><?= htmlspecialchars($task['title']) ?></strong><br>
                                 Description: <?= htmlspecialchars($task['description']) ?><br>
                                 Personne: <?= htmlspecialchars($task['personne']) ?><br>
                                 Début: <?= htmlspecialchars($task['start_date']) ?><br>
                                 Fin: <?= htmlspecialchars($task['end_date']) ?><br>
-                                <a href="?toggle_status=<?= $index ?>">Changer le statut</a>
                                 <a href="?edit=<?= $index ?>">Modifier</a>
                                 <a href="?delete=<?= $index ?>">Supprimer</a>
                             </div>
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
-                <div class="column-doing">
+                <div class="column-doing" data-status="doing" ondragover="allowDrop(event)" ondrop="drop(event)">
                     <h2><?= STATUSES['doing'] ?></h2>
                     <?php foreach ($filteredTasks as $index => $task): ?>
                         <?php if ($task['status'] === STATUSES['doing']): ?>
-                            <div class="task-item">
+                            <div class="task-item" draggable="true" ondragstart="drag(event)" id="task-<?= $index ?>">
                                 <strong><?= htmlspecialchars($task['title']) ?></strong><br>
                                 Description: <?= htmlspecialchars($task['description']) ?><br>
                                 Personne: <?= htmlspecialchars($task['personne']) ?><br>
                                 Début: <?= htmlspecialchars($task['start_date']) ?><br>
                                 Fin: <?= htmlspecialchars($task['end_date']) ?><br>
-                                <a href="?toggle_status=<?= $index ?>">Changer le statut</a>
                                 <a href="?edit=<?= $index ?>">Modifier</a>
                                 <a href="?delete=<?= $index ?>">Supprimer</a>
                             </div>
                         <?php endif; ?>
                     <?php endforeach; ?>
                 </div>
-                <div class="column-done">
+                <div class="column-done" data-status="done" ondragover="allowDrop(event)" ondrop="drop(event)">
                     <h2><?= STATUSES['done'] ?></h2>
                     <?php foreach ($filteredTasks as $index => $task): ?>
                         <?php if ($task['status'] === STATUSES['done']): ?>
-                            <div class="task-item">
+                            <div class="task-item" draggable="true" ondragstart="drag(event)">
                                 <strong><?= htmlspecialchars($task['title']) ?></strong><br>
                                 Description: <?= htmlspecialchars($task['description']) ?><br>
                                 Personne: <?= htmlspecialchars($task['personne']) ?><br>
                                 Début: <?= htmlspecialchars($task['start_date']) ?><br>
                                 Fin: <?= htmlspecialchars($task['end_date']) ?><br>
-                                <a href="?toggle_status=<?= $index ?>">Changer le statut</a>
                                 <a href="?edit=<?= $index ?>">Modifier</a>
                                 <a href="?delete=<?= $index ?>">Supprimer</a>
                             </div>
@@ -188,5 +196,6 @@ if (isset($_GET['toggle_status'])) {
             <h2>MyDigitalSchool 2024</h2>
         </div>
     </footer>
+<script src="./public/script.js"></script>
 </body>
 </html>
