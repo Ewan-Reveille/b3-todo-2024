@@ -7,7 +7,7 @@ function drag(event) {
 
 function allowDrop(event) {
     event.preventDefault();
-}
+} 
 
 function drop(event) {
     event.preventDefault();
